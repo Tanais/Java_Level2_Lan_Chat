@@ -3,6 +3,6 @@ module com.example.lan_chat {
     requires javafx.fxml;
 
 
-    opens com.example.lan_chat to javafx.fxml;
-    exports com.example.lan_chat;
+    opens ru.as.homeworks.lan_chat_start to javafx.fxml;
+    exports ru.as.homeworks.lan_chat_start;
 }
