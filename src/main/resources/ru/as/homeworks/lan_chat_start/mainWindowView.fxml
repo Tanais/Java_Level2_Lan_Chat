@@ -9,14 +9,11 @@
 
     <MenuBar>
         <Menu text="File">
-            <items>
-                <MenuItem mnemonicParsing="false" onAction="#onExitClick" text="Exit" />
-            </items></Menu>
+            <MenuItem mnemonicParsing="false" onAction="#onExitClick" text="Exit"/>
+        </Menu>
         <Menu text="View" />
         <Menu mnemonicParsing="false" text="About">
-            <items>
-                <MenuItem onAction="#onAboutClick" mnemonicParsing="false" text="About" />
-            </items>
+            <MenuItem onAction="#onAboutClick" mnemonicParsing="false" text="About"/>
         </Menu>
     </MenuBar>
     <TextArea fx:id="chatField" editable="false" VBox.vgrow="ALWAYS" />
