@@ -7,12 +7,13 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.Socket;
 
+
 public class ChatClient {
 
     private Socket socket;
     private DataInputStream in;
     private DataOutputStream out;
-    private LanChatController controller;
+    private final LanChatController controller;
 
 
     public ChatClient(LanChatController controller) {
@@ -30,15 +31,22 @@ public class ChatClient {
                     while (true) {
                         final String authMsg = in.readUTF();
                         if (authMsg.startsWith("/authok")) {
+
                             final String nick = authMsg.split(" ")[1];
                             controller.addMessage("Good auth " + nick);
+                            controller.setAuth(true);
                             break;
                         }
                     }
                     while (true) {
                         final String msg = in.readUTF();
                         if ("/end".equals(msg)) {
+                            controller.setAuth(false);
                             break;
+                        }
+                        if (msg.startsWith("/clients")){
+                            final String[] clients = msg.replace("/clients", "").split(" ");
+                            controller.updateClientsList(clients);
                         }
                         controller.addMessage(msg);
                     }

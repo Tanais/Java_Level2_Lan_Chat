@@ -42,10 +42,12 @@ public class ChatServer {
 
     public void subscribe(ClientHandler client) {
         clients.put(client.getNick(), client);
+        broadcastClientList();
     }
 
-    public void unsubcribe(ClientHandler client) {
+    public void unsubscribe(ClientHandler client) {
         clients.remove(client.getNick());
+        broadcastClientList();
     }
 
     public void broadcast(String message) {
@@ -53,4 +55,22 @@ public class ChatServer {
             client.sendMessage(message);
         }
     }
+
+    public void sendMessageToClient(ClientHandler from, String nickTo, String message){
+        ClientHandler clientTo = clients.get(nickTo);
+        if (clientTo != null){
+            clientTo.sendMessage("from " + from.getNick() + ":" + message);
+            from.sendMessage("to client " + nickTo + ": " + message);
+            return;
+        }
+        from.sendMessage("client: " + nickTo + " not in chat");
+    }
+
+    public void broadcastClientList(){
+        StringBuilder message = new StringBuilder("/clients");
+        clients.values().forEach(client -> message.append(client.getNick()).append(" "));
+        broadcast(message.toString());
+    }
+
+
 }

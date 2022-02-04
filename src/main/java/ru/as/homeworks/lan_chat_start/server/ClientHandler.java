@@ -12,6 +12,7 @@ public class ClientHandler {
     private final DataInputStream in;
     private final DataOutputStream out;
 
+
     public ClientHandler(Socket socket, ChatServer chatServer) {
         try {
             this.nick = "";
@@ -77,12 +78,17 @@ public class ClientHandler {
         try {
             while (true) {
                 final String msg = in.readUTF();
-                if ("/end".equals(msg)) {
-                    break;
-                }
-                chatServer.broadcast(msg);
+                if (msg.startsWith("/")) {
+                    if ("/end".equals(msg)) {
+                        break;
+                    }
+                    if (msg.startsWith("/w")) {
+                        String[] split = msg.split(" ");
+                        final String nickTo = split[1];
+                        chatServer.sendMessageToClient(this, nickTo, msg.substring("/w".length() + 2 + nickTo.length()));
+                    } continue;
+                } chatServer.broadcast(msg);
             }
-
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -108,7 +114,7 @@ public class ClientHandler {
         if (socket != null) {
             try {
                 socket.close();
-                chatServer.unsubcribe(this);
+                chatServer.unsubscribe(this);
             } catch (IOException e) {
                 e.printStackTrace();
             }
