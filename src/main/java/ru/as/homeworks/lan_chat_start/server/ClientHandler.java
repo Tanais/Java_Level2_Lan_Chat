@@ -6,32 +6,48 @@ import java.io.IOException;
 import java.net.Socket;
 
 public class ClientHandler {
-    private final ChatServer chatServer;
-    private final Socket socket;
+    private ChatServer chatServer;
+    private Socket socket;
     private String nick;
-    private final DataInputStream in;
-    private final DataOutputStream out;
+    private DataInputStream in;
+    private DataOutputStream out;
 
 
     public ClientHandler(Socket socket, ChatServer chatServer) {
-        try {
+        new Thread(() -> {
             this.nick = "";
             this.socket = socket;
             this.chatServer = chatServer;
-            in = new DataInputStream(socket.getInputStream());
-            out = new DataOutputStream(socket.getOutputStream());
+//            Запускаем новый поток и ждем что клиент авторизуется
+            try {
+                in = new DataInputStream(socket.getInputStream());
+                out = new DataOutputStream(socket.getOutputStream());
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            System.out.println("Start wait auth");
+            try {
+                Thread.sleep(10000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            System.out.println("End wait");
+//            Если получил пустой ник значит не прошла авторизация.
+            if (this.nick == ""){
+//                закрываем сессию (Кикаем).
+                this.closeConnection();
+                System.out.println("KICK");
+            }
 
-            new Thread(() -> {
-                try {
-                    authenticate();
-                    readMessage();
-                } finally {
-                    closeConnection();
-                }
-            }).start();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+        }).start();
+        new Thread(() -> {
+            try {
+                authenticate();
+                readMessage();
+            } finally {
+                closeConnection();
+            }
+        }).start();
     }
 
     private void authenticate() {
@@ -86,8 +102,10 @@ public class ClientHandler {
                         String[] split = msg.split(" ");
                         final String nickTo = split[1];
                         chatServer.sendMessageToClient(this, nickTo, msg.substring("/w".length() + 2 + nickTo.length()));
-                    } continue;
-                } chatServer.broadcast(msg);
+                    }
+                    continue;
+                }
+                chatServer.broadcast(msg);
             }
         } catch (IOException e) {
             e.printStackTrace();
