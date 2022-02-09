@@ -35,7 +35,12 @@ public class ClientHandler {
 //            Если получил пустой ник значит не прошла авторизация.
             if (this.nick == ""){
 //                закрываем сессию (Кикаем).
-                this.closeConnection();
+                try {
+                    this.socket.close();
+//                    this.closeConnection();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
                 System.out.println("KICK");
             }
 
