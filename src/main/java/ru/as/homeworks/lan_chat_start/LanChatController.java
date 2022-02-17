@@ -10,13 +10,16 @@ import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import ru.as.homeworks.lan_chat_start.client.ChatClient;
 
-import java.util.List;
-
 public class LanChatController {
     @FXML
     private HBox loginBox;
     @FXML
     private TextField loginField;
+
+    public TextArea getChatField() {
+        return chatField;
+    }
+
     @FXML
     private PasswordField passwordField;
     @FXML

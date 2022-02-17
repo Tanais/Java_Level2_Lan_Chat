@@ -2,9 +2,7 @@ package ru.as.homeworks.lan_chat_start.client;
 
 import ru.as.homeworks.lan_chat_start.LanChatController;
 
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
-import java.io.IOException;
+import java.io.*;
 import java.net.Socket;
 
 
@@ -31,7 +29,7 @@ public class ChatClient {
                     while (true) {
                         final String authMsg = in.readUTF();
                         if (authMsg.startsWith("/authok")) {
-
+                            loadHistory();
                             final String nick = authMsg.split(" ")[1];
                             controller.addMessage("Good auth " + nick);
                             controller.setAuth(true);
@@ -49,6 +47,7 @@ public class ChatClient {
                             controller.updateClientsList(clients);
                         }
                         controller.addMessage(msg);
+                        saveHistory();
                     }
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -57,6 +56,28 @@ public class ChatClient {
                 }
 
             }).start();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void loadHistory() {
+//            TODO: Прочитать из файла и загрузить последние 100 строк.
+    }
+
+    private void saveHistory() {
+        try {
+            File history = new File("history.txt");
+
+            if (!history.exists()) {
+                history.createNewFile();
+            }
+            PrintWriter fileWriter = new PrintWriter(new FileWriter(history, false));
+
+            BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
+            bufferedWriter.write(controller.getChatField().getText());
+            bufferedWriter.close();
+
         } catch (IOException e) {
             e.printStackTrace();
         }
