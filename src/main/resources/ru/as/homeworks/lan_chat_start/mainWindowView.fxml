@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox alignment="CENTER" prefHeight="530.0" prefWidth="378.0" spacing="20.0" xmlns="http://javafx.com/javafx/16"
+      xmlns:fx="http://javafx.com/fxml/1" fx:controller="ru.as.homeworks.lan_chat_start.LanChatController">
+    <padding>
+        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0"/>
+    </padding>
+
+    <MenuBar>
+        <Menu text="File">
+            <MenuItem mnemonicParsing="false" onAction="#onExitClick" text="Exit"/>
+        </Menu>
+        <Menu text="View"/>
+        <Menu mnemonicParsing="false" text="About">
+            <MenuItem mnemonicParsing="false" onAction="#onAboutClick" text="About"/>
+        </Menu>
+    </MenuBar>
+
+    <HBox fx:id="loginBox" VBox.vgrow="ALWAYS">
+        <TextField fx:id="loginField" promptText="Login"/>
+        <PasswordField fx:id="passwordField" promptText="Password"/>
+        <Button defaultButton="true" onAction="#btnAuthClick" text="Auth"/>
+    </HBox>
+
+    <HBox fx:id="messageBox" visible="false">
+
+
+        <VBox>
+
+            <TextArea fx:id="chatField" editable="false" VBox.vgrow="ALWAYS"/>
+
+            <HBox>
+                <TextField fx:id="messageField" HBox.hgrow="ALWAYS"/>
+                <Button defaultButton="true" onAction="#onSendMessageClick" text="Send Message"/>
+            </HBox>
+        </VBox>
+        <ListView fx:id="clientList" minWidth="200" maxWidth="200" onMouseClicked="#selectClient"></ListView>
+
+    </HBox>
+
+</VBox>
