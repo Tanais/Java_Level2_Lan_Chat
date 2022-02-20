@@ -11,12 +11,14 @@ import java.util.Map;
 public class ChatServer {
 
     private final Map<String, ClientHandler> clients;
-    private final AuthService authService;
+    private final dbAuthService authService;
+
 
     public ChatServer() {
 
         clients = new HashMap<>();
-        authService = new ImMemoryAuthServise();
+        authService = new dbAuthService();
+
     }
 
     public void start() {
