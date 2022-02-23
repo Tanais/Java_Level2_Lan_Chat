@@ -34,6 +34,7 @@ public class ChatClient {
                             final String nick = authMsg.split(" ")[1];
                             controller.addMessage("Good auth " + nick);
                             controller.setAuth(true);
+                            loadHistory();
                             break;
                         }
                     }
@@ -49,6 +50,7 @@ public class ChatClient {
                         }
                         controller.addMessage(msg);
                         saveHistory();
+
                     }
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -61,7 +63,6 @@ public class ChatClient {
             e.printStackTrace();
         }
     }
-
 
     private void saveHistory() {
         try {
@@ -78,6 +79,32 @@ public class ChatClient {
             e.printStackTrace();
         }
     }
+
+
+    private void loadHistory() throws IOException {
+        int posHistory = 100;
+        File history = new File("history.txt");
+        List<String> historyList = new ArrayList<>();
+        FileInputStream in = new FileInputStream(history);
+        BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(in));
+
+        String temp;
+        while ((temp = bufferedReader.readLine()) != null) {
+            historyList.add(temp);
+        }
+
+        if (historyList.size() > posHistory) {
+            for (int i = historyList.size() - posHistory; i <= (historyList.size() - 1); i++) {
+
+            }
+        } else {
+            for (int i = 0; i < posHistory; i++) {
+                controller.getChatField().appendText(historyList.get(i) + "\n");
+            }
+        }
+    }
+
+
 
     public void closeConnection() {
         if (in != null) {
