@@ -3,12 +3,12 @@ package ru.as.homeworks.lan_chat_start.server;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ImMemoryAuthServise implements AuthService {
+public class ImMemoryAuthService implements AuthService {
 
 
     private final List<UserData> users;
 
-    public ImMemoryAuthServise(){
+    public ImMemoryAuthService(){
         users = new ArrayList<>();
         for (int i = 1; i < 11; i++){
             users.add(new UserData("login" + i, "pass" + i, "nick" + i));
