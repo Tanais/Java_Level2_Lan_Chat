@@ -48,7 +48,7 @@ public class ChatClient {
                             controller.updateClientsList(clients);
                         }
                         controller.addMessage(msg);
-                        saveHistory();
+
                     }
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -63,21 +63,7 @@ public class ChatClient {
     }
 
 
-    private void saveHistory() {
-        try {
-            File history = new File("history.txt");
-            if (!history.exists()) {
-                history.createNewFile();
-            }
-            PrintWriter fileWriter = new PrintWriter(new FileWriter(history, false));
-            BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
-            bufferedWriter.write(controller.getChatField().getText());
-            bufferedWriter.close();
 
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
 
     public void closeConnection() {
         if (in != null) {
