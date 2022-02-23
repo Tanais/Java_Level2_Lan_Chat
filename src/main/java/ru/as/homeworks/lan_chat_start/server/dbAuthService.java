@@ -33,6 +33,7 @@ public class dbAuthService implements AuthService {
         } catch (Exception e) {
             e.printStackTrace();
         }
+        return null;
     }
 
     static void createTable(){
